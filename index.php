@@ -1,3 +1,6 @@
+﻿<!--Скрипт LiveReload-->
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
 <?php
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
@@ -108,7 +111,8 @@ $days_until_deadline = null;
                     <label class="checkbox">
                         <a href="/">
                             <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
-                            <input class="checkbox__input visually-hidden" type="checkbox">
+                            
+                            <input  id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" <?=($show_complete_tasks == 1) ? 'checked' : '' ?>> 
                             <span class="checkbox__text">Показывать выполненные</span>
                         </a>
                     </label>
@@ -116,6 +120,20 @@ $days_until_deadline = null;
 
                 <table class="tasks">
                     <!--показывать следующий тег <tr/>, если переменная равна единице-->
+                    
+                    
+                    <tr class="tasks__item task task--completed" <?=($show_complete_tasks == 1) ? ' ' : 'hidden' ?>>
+                    <td class="task__select">
+                        <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden" type="checkbox" checked>
+                            <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
+                        </label>
+                    </td>
+                    <td class="task__date">10.04.2017</td>
+
+                        <td class="task__controls">
+                        </td>
+                    </tr>
                     <tr class="tasks__item task task--completed">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
