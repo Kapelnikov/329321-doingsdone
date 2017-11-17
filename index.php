@@ -56,14 +56,14 @@ $tasks = [
       
             [
             "Задача" => "Заказать пиццу",
-            "Дата выполнения" => "Нет",
+            "Дата выполнения" => null,
             "Категория" => "Домашние дела",
             "Выполнен" => "Нет",
             ],
               
             [
             "Задача" => "Купить корм для кота",
-            "Дата выполнения" => "Нет",
+            "Дата выполнения" => null,
             "Категория" => "Домашние дела",
             "Выполнен" => "Нет",
             ]
@@ -134,27 +134,27 @@ function count_tasks($tasks, $project_name) {
 
                   <?php
 
-$index = 0;
-$num = count($projects);
-while ($index < $num) {
-$project = $projects[$index];
+                        $index = 0;
+                        $num = count($projects);
+                        while ($index < $num) {
+                        $project = $projects[$index];
 
 
-if ($index == 0) {
-   print ('<li class="main-navigation__list-item main-navigation__list-item--active">');
-}
-   else {
-       print('<li class="main-navigation__list-item ">');
-       
-   }
+                        if ($index == 0) {
+                           print ('<li class="main-navigation__list-item main-navigation__list-item--active">');
+                        }
+                           else {
+                               print('<li class="main-navigation__list-item ">');
+                               
+                           }
 
 
-print ('<a class="main-navigation__list-item-link" href="#">' . $project . '</a>');
-print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project) . '</span>');
-print ('</li>');
-$index = $index + 1;
-}
-?>
+                        print ('<a class="main-navigation__list-item-link" href="#">' . $project . '</a>');
+                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project) . '</span>');
+                        print ('</li>');
+                        $index++;
+                        }
+                        ?>
 
                     </ul>
                 </nav>
