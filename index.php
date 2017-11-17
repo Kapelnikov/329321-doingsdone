@@ -17,40 +17,29 @@ $current_ts = strtotime('now midnight'); // текущая метка време
 // запишите сюда дату выполнения задачи в формате дд.мм.гггг
 $date_deadline = date ('d.m.Y',$task_deadline_ts);
 
-
-
 // в эту переменную запишите кол-во дней до даты задачи
 $days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
 
 // массив для проектов
 $projects = ["Все", "Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
 
-// переменная для количества проектов
-$list_item_count = 12;
-
 // двумерный массив для задач
 $tasks = [
         
-        $inbox = [
-    
-            [
+          [
             "Задача" => "Встреча с другом",
             "Дата выполнения" => "  22.04.2018",
             "Категория" => "Входящие",
             "Выполнен" => "Нет",
-            ]
-                ],
-
-        $studying = [
+            ],
+            
             [
             "Задача" => "Сделать задание первого раздела",
             "Дата выполнения" => "21.04.2018",
             "Категория" => "Учеба",
             "Выполнен" => "Да",   
-            ]
+            ],
         
-                ],
-        $work = [
             [
             "Задача" => "Выполнить тестовое задание",
             "Дата выполнения" => "25.05.2018",
@@ -63,28 +52,39 @@ $tasks = [
             "Дата выполнения" => "01.06.2018",
             "Категория" => "Работа",
             "Выполнен" => "Нет",
-            ]
+            ],
       
-                ],
-        
-        $house_chores = [
-              [
+            [
             "Задача" => "Заказать пиццу",
-            "Дата выполнения" => "Нет",
+            "Дата выполнения" => null,
             "Категория" => "Домашние дела",
             "Выполнен" => "Нет",
             ],
               
-              [
+            [
             "Задача" => "Купить корм для кота",
-            "Дата выполнения" => "Нет",
+            "Дата выполнения" => null,
             "Категория" => "Домашние дела",
             "Выполнен" => "Нет",
-              ]
-      
-                       ]    
+            ]
       
             ];
+
+// функция подсчета числа задач из массива
+function count_tasks($tasks, $project_name) {
+ if ($project_name == 'Все') {
+  return count($tasks);
+ }
+
+ $count = 0;
+ foreach ($tasks as $task) {
+  if ($task['Категория'] == $project_name) {
+   $count++; // Прибавляем 1
+  }
+ }
+
+ return $count;
+}
 
 
 ?>
@@ -132,27 +132,29 @@ $tasks = [
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
 
-                    <?php $first = reset($projects);
+                  <?php
 
-                    print ('<li class="main-navigation__list-item main-navigation__list-item--active">');
-                    print ('<a class="main-navigation__list-item-link" href="#">' . $first . '</a>');
-                    print ('<span class="main-navigation__list-item-count">' . $list_item_count . '</span>');
-                    print ('</li>');
+                        $index = 0;
+                        $num = count($projects);
+                        while ($index < $num) {
+                        $project = $projects[$index];
 
-                    ?>
 
-                    <?php $index = 1;
-                    $num = count($projects);
-                    while ($index < $num) {
-                    $project = $projects[$index];
-                    print ('<li class="main-navigation__list-item ">');
-                    print ('<a class="main-navigation__list-item-link" href="#">' . $project . '</a>');
-                    print ('<span class="main-navigation__list-item-count">' . $list_item_count . '</span>');
-                    print ('</li>');
-                    $index = $index + 1;
-                    } 
+                        if ($index == 0) {
+                           print ('<li class="main-navigation__list-item main-navigation__list-item--active">');
+                        }
+                           else {
+                               print('<li class="main-navigation__list-item ">');
+                               
+                           }
 
-                    ?>
+
+                        print ('<a class="main-navigation__list-item-link" href="#">' . $project . '</a>');
+                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project) . '</span>');
+                        print ('</li>');
+                        $index++;
+                        }
+                        ?>
 
                     </ul>
                 </nav>
@@ -187,38 +189,22 @@ $tasks = [
                         </a>
                     </label>
                 </div>
-
-                <table class="tasks">
-                    <?php foreach ($work as $key => $value): ?>
-                    <tr class="tasks__item task &lt;?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?&gt;">
-                        <td class="task__select"><label class="checkbox task__checkbox"><input checked class="checkbox__input visually-hidden" type="checkbox"> <span class="checkbox__text"><?=$value['Задача']; ?>
-                        </span></label></td>
-                        <td class="task__date"><?=$value['Дата выполнения']; ?>
-                        </td>
-                        <td class="task__controls"></td>
-                    </tr><?php endforeach; ?><?php foreach ($house_chores as $key => $value): ?>
-                    <tr class="tasks__item task &lt;?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?&gt;">
-                        <td class="task__select"><label class="checkbox task__checkbox"><input checked class="checkbox__input visually-hidden" type="checkbox"> <span class="checkbox__text"><?=$value['Задача']; ?>
-                        </span></label></td>
-                        <td class="task__date"><?=$value['Дата выполнения']; ?>
-                        </td>
-                        <td class="task__controls"></td>
-                    </tr><?php endforeach; ?><?php foreach ($inbox as $key => $value): ?>
-                    <tr class="tasks__item task &lt;?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?&gt;">
-                        <td class="task__select"><label class="checkbox task__checkbox"><input checked class="checkbox__input visually-hidden" type="checkbox"> <span class="checkbox__text"><?=$value['Задача']; ?>
-                        </span></label></td>
-                        <td class="task__date"><?=$value['Дата выполнения']; ?>
-                        </td>
-                        <td class="task__controls"></td>
-                    </tr><?php endforeach; ?><?php foreach ($studying as $key => $value): ?>
-                    <tr class="tasks__item task &lt;?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?&gt;">
-                        <td class="task__select"><label class="checkbox task__checkbox"><input checked class="checkbox__input visually-hidden" type="checkbox"> <span class="checkbox__text"><?=$value['Задача']; ?>
-                        </span></label></td>
-                        <td class="task__date"><?=$value['Дата выполнения']; ?>
-                        </td>
-                        <td class="task__controls"></td>
-                    </tr><?php endforeach; ?>
-    </table>
+                    
+                    <table class="tasks">
+                     <?php foreach ($tasks as $key => $value): ?> 
+                            <tr class="tasks__item task <?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?>">
+                            <td class="task__select">
+                            <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden" type="checkbox" checked>
+                            <span class="checkbox__text"><?=$value['Задача']; ?></span>
+                            </label>
+                            </td>
+                            <td class="task__date"><?=$value['Дата выполнения']; ?></td>
+                            <td class="task__controls">
+                            </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
                 
             </main>
         </div>
