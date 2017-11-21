@@ -75,7 +75,7 @@
 
             <main class="content__main">
 
-                <?=$content;?>
+                <?=$error_msg; ?>
                 
            </main>
 
