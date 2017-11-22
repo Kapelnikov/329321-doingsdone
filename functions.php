@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 // функция подсчета числа задач из массива
 function count_tasks($tasks, $project_name) {
  if ($project_name == 'Все') {
@@ -30,6 +27,3 @@ function renderTemplate($path, $page_name) {
         return $html = "";
     }
 }
-
-
-

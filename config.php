@@ -5,6 +5,3 @@ $config = [
     'templates_path' => 'templates/',
     'enable' => true
 ];
-
-?>
-
