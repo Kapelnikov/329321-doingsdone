@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once(__DIR__.'../config.php');
 require_once(__DIR__.'../functions.php');
@@ -12,11 +12,9 @@ if (isset($_GET['project_id'])) {
 
     if (!isset($projects[$project_id])) {
         //послать заголовок 404
-        ob_start();
         http_response_code(404);
-      
-       print ("welcome");     
-       die();
+        print("Сорямба, гайз! Такой страницы нет! Ошибка 404!");  
+        die();
     } 
     else {
         
