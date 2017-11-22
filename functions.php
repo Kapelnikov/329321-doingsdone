@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 // функция подсчета числа задач из массива
 function count_tasks($tasks, $project_name) {
  if ($project_name == 'Все') {
@@ -21,13 +18,12 @@ function count_tasks($tasks, $project_name) {
 
 // функция шаблонизации
 function renderTemplate($path, $page_name) {
-    if ($path and $page_name) {
+    if (!file_exists($path and $page_name)) {
         ob_start();
         extract($page_name);
-        require_once($path);
+        include($path);
         return $html = ob_get_clean();
     } else {
         return $html = "";
     }
 }
-?>
