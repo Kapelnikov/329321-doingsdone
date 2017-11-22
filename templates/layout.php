@@ -59,7 +59,7 @@
                            }
 
 
-                        print ('<a class="main-navigation__list-item-link" href="#">' . $project . '</a>');
+                        print ('<a class="main-navigation__list-item-link" href="index.php?$project_index=">' . $project . '</a>');
                         print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project) . '</span>');
                         print ('</li>');
                         $index++;

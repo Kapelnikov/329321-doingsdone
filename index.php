@@ -10,6 +10,22 @@ require_once(__DIR__.'../functions.php');
 require_once(__DIR__.'../data.php');
 
 
+$project_temp = null;
+
+if (isset($_GET['project_index'])) {
+    $project_id = $_GET['project_index'];
+
+        foreach ($tasks as $item) {
+        if ($item['Категория'] == $projects[$project_id]) {
+            $project_temp = $item;
+            break;
+        }
+    }
+
+};
+
+
+
 
 $page_content = renderTemplate($config['templates_path'] . 'index.php', ['projects' => $projects, 'tasks' => $tasks]);
 
