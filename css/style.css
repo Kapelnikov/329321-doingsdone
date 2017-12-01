@@ -185,6 +185,7 @@ a:focus {
   transform: translate(-50%, -50%);
 }
 
+
 .modal__close {
   position: absolute;
   top: 12px;
@@ -198,7 +199,10 @@ a:focus {
 
   background: transparent url("../img/icon-close.svg") no-repeat 50% 50%;
   border: 0;
+  cursor: pointer;
 }
+
+
 
 .main-header {
   display: flex;
