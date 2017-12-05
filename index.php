@@ -11,6 +11,8 @@ if (isset($_GET['project_id'])) {
     $project_id = $_GET['project_id'];
 
     if (!isset($projects[$project_id])) {
+        
+
         //послать заголовок 404
         http_response_code(404);
         print("Сорямба, гайз! Такой страницы нет! Ошибка 404!");  
@@ -27,7 +29,18 @@ if (isset($_GET['project_id'])) {
 
 }
 
+if (isset ($_GET["show_completed"])) {
+    setcookie("show_completed", $_GET["show_completed"]);
+    header("Location: /"); // относительный путь на главную
+}
 
+if (isset ($_COOKIE ["show_completed"]) and $_COOKIE ["show_completed"] == 0)
+    foreach ($filtered_tasks as $i => $task) {
+        if ($task['Выполнен'] == 'Да') {
+            unset($filtered_tasks[$i]);
+        }
+
+    }
 
 $modal = '';
 $overlay = '';
