@@ -1,8 +1,13 @@
  
 
 <?php
-// показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
+
+
+var_dump($_COOKIE["show_completed"]);
+
+
+
+
 
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
@@ -38,10 +43,31 @@ $days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
                     </nav>
 
                     <label class="checkbox">
-                        <a href="/">
-                            <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
+
+                        <?php 
                             
-                            <input  id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" <?=($show_complete_tasks == 1) ? 'checked' : '' ?>> 
+                            if (isset($_COOKIE ["show_completed"]) and $_COOKIE ["show_completed"] == 1)
+
+                            { $show_completed = 0; 
+
+                            }
+                            
+                            else {
+                                $show_completed = 1;
+                            }
+                        ?>
+
+                        <a href="index.php?show_completed=<?php echo $show_completed ?>">
+                           
+
+
+                             <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице
+
+                            
+
+                             --> 
+
+                            <input  id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" <?=($show_completed == 0) ? 'checked' : '' ?>> 
                             <span class="checkbox__text">Показывать выполненные</span>
                         </a>
                     </label>
