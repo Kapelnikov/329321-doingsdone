@@ -1,11 +1,78 @@
 <?php
 
+session_start();
+
 require_once(__DIR__.'../config.php');
 require_once(__DIR__.'../functions.php');
 require_once(__DIR__.'../data.php');
+require_once(__DIR__.'../userdata.php');
 
 $project_temp = null;
 $filtered_tasks = $tasks;
+$modal = '';
+$overlay = '';
+
+if (isset($_GET["login"])) {
+    
+    $overlay = "overlay";
+
+    $errors = [];
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $data = $_POST;
+         
+            if (isset($_POST["auth_submit"])) {
+            $password = $_POST["password"];
+            $email = $_POST["email"];
+
+            if (empty($password)) {
+            $errors["password"] = "Введите пароль!";
+
+
+            }
+
+           if (empty($email)) {
+                $errors["email"] = "Введите email!";
+                
+
+           }
+                    
+        if (!empty ($password) and !empty ($email)) {
+            $search = null;
+            foreach ($users as $i => $user) {
+               if ($user["email"] == $email) {
+                    if (password_verify ($password, $user["password"])) {
+                        $search = $i;
+                    }
+
+                    else {
+                        $errors["password"] = "Вы ввели неверный пароль";
+                    }
+               }
+           }  
+
+           if (is_null($search)) {
+
+                if (!isset($errors["password"])) {
+                    $errors["email"] = "Такого email нет!";
+                }
+                
+           } 
+
+           else {
+                $_SESSION["user_id"] = $search;
+                header("Location: /"); // относительный путь на главную
+           }
+        }
+   }
+
+
+}
+
+echo renderTemplate($config['templates_path'] . 'auth_form.php', ['errors' => $errors, 'data' => $data]);
+
+}
 
 if (isset($_GET['project_id'])) {
     $project_id = $_GET['project_id'];
@@ -42,8 +109,9 @@ if (isset ($_COOKIE ["show_completed"]) and $_COOKIE ["show_completed"] == 0)
 
     }
 
-$modal = '';
-$overlay = '';
+    
+
+
 if (isset($_GET['add'])) {
     $overlay = "overlay";
    
@@ -115,7 +183,7 @@ if (isset($_GET['close'])) {
 $page_content = renderTemplate($config['templates_path'] . 'index.php', ['projects' => $projects, 'tasks' => $tasks, 'filtered_tasks' => $filtered_tasks]);
 
 if ($config['enable']) {
-    $layout_content = renderTemplate($config['templates_path'] . 'layout.php', ['projects' => $projects, 'tasks' => $tasks, 'content' => $page_content, 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal]);
+    $layout_content = renderTemplate($config['templates_path'] . 'layout.php', ['projects' => $projects, 'tasks' => $tasks, 'content' => $page_content, 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal, 'users' => $users]);
 } else {
     $layout_content = renderTemplate($config['templates_path'] . 'off.php', ['projects' => $projects, 'tasks' => $tasks, 'error_msg' => 'Сорямба гайз, сайт не работает!', 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal]);
 
