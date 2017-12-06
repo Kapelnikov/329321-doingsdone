@@ -1,6 +1,7 @@
   
 
 <?php
+
 $task_name = $_POST["name"] ?? "";
 $task_date = $_POST["date"] ?? "";
 
@@ -26,8 +27,8 @@ $task_date = $_POST["date"] ?? "";
         <input class="form__input <?php if (isset($errors['name'])) echo 'form__input--error';?>" type="text" name="name" id="name" value="<?=$task_name;?>" placeholder="Введите название">
 
         <?php if (isset($errors['name'])): ?> 
-            <p class="p.form__message"><?php echo $errors["name"]?></p>
-            <?php endif; ?>  
+            <p class="form__message"><?php echo $errors["name"]?></p>
+        <?php endif; ?>  
       </div>
 
 
@@ -56,7 +57,7 @@ $task_date = $_POST["date"] ?? "";
         </select>
 
         <?php if (isset($errors['project'])): ?> 
-            <p class="p.form__message"><?php echo $errors["project"]?></p>
+            <p class="form__message"><?php echo $errors["project"]?></p>
             <?php endif; ?>  
 
       </div>

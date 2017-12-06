@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -19,26 +18,42 @@
 
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
+        
         <header class="main-header">
             <a href="#">
                 <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
             </a>
 
-            <div class="main-header__side">
-                <a class="main-header__side-item button button--plus" href="#">Добавить задачу</a>
+           <?php if (isset($_SESSION["user_id"]) and isset($users[$_SESSION["user_id"]])) {
+                $user = $users[$_SESSION["user_id"]];
+                print ('
+                    <div class="main-header__side">
+                         <a class="main-header__side-item button button--plus" href="#">Добавить задачу</a>
 
-                <div class="main-header__side-item user-menu">
-                    <div class="user-menu__image">
-                        <img src="img/user-pic.jpg" width="40" height="40" alt="Пользователь">
-                    </div>
+                            <div class="main-header__side-item user-menu">
+                                <div class="user-menu__image">
+                                     <img src="img/user-pic.jpg" width="40" height="40" alt="Пользователь">
+                                </div>
 
-                    <div class="user-menu__data">
-                        <p>Константин</p>
+                            <div class="user-menu__data">
+                                <p>' . $user["name"] . '</p>
 
-                        <a href="#">Выйти</a>
-                    </div>
-                </div>
-            </div>
+                                <a href="/logout.php">Выйти</a>
+                            </div>
+                        </div>
+                
+                    </div>');
+
+
+           }
+
+            else print (' 
+                            <div class="main-header__side">
+                                <a class="main-header__side-item button button--transparent" href="/index.php?login">Войти</a>
+                            </div>');
+
+                            ?>
+
         </header>
 
         <div class="content">
