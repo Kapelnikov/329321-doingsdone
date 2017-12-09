@@ -71,7 +71,7 @@ SELECT * FROM tasks
 WHERE project_id = 2;
 
 # Пометить задачу как выполненную
-UPDATE tasks SET completed = NOW() WHERE id = 1;
+UPDATE tasks SET completed_at = NOW() WHERE id = 1;
 
 # Получить все задачи для завтрашнего дня
 SELECT * FROM tasks WHERE deadline = CURDATE() + INTERVAL 1 DAY;
