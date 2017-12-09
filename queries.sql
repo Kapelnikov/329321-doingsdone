@@ -9,16 +9,12 @@ VALUES
 
 # Заполнение проектов
 INSERT INTO projects (name, user_id)
-SELECT
-    p.name,
-    u.id
-FROM
-    (SELECT 'Входящие' AS name
-    UNION SELECT 'Учеба'
-    UNION SELECT 'Работа'
-    UNION SELECT 'Домашние дела'
-    UNION SELECT 'Авто') p
-    LEFT JOIN users u ON TRUE;
+VALUES
+('Входящие', 1),
+('Учеба', 2),
+('Работа', 3),
+('Домашние дела', 2),
+('Авто', 1);
 
 # Заполнение задач
 INSERT INTO tasks (created_at, completed_at, name, deadline, user_id, project_id)
