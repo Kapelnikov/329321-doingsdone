@@ -1,14 +1,14 @@
 USE doingsdone;
 
 # Заполнение пользователей        
-INSERT INTO user (email, name, password)
+INSERT INTO users (email, name, password)
 VALUES
     ('ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka'),
     ('kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa'),
     ('warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW');
 
 # Заполнение проектов
-INSERT INTO project (name, user_id)
+INSERT INTO projects (name, user_id)
 SELECT
     p.name,
     u.id
@@ -21,7 +21,7 @@ FROM
     LEFT JOIN users u ON TRUE;
 
 # Заполнение задач
-INSERT INTO task (created_at, completed_at, name, deadline, user_id, project_id)
+INSERT INTO tasks (created_at, completed_at, name, deadline, user_id, project_id)
 SELECT
     NOW(),
     t.completed_at,
@@ -34,7 +34,7 @@ FROM
         NULL AS completed_at,
         'Собеседование в IT компании' AS name,
         STR_TO_DATE('01.06.2018', '%d.%m.%Y') AS deadline,
-        3 AS projects_id
+        3 AS project_id
     UNION SELECT
         NULL,
         'Выполнить тестовое задание',
@@ -63,18 +63,18 @@ FROM
     LEFT JOIN users u ON TRUE;
     
 # Получить список из всех проектов для одного пользователя
-SELECT * FROM project
+SELECT * FROM projects
 WHERE user_id = 1;
     
 # Получить список из всех задач для одного проекта
-SELECT * FROM task
+SELECT * FROM tasks
 WHERE project_id = 2;
 
 # Пометить задачу как выполненную
-UPDATE task SET completed = NOW() WHERE id = 1;
+UPDATE tasks SET completed = NOW() WHERE id = 1;
 
 # Получить все задачи для завтрашнего дня
-SELECT * FROM task WHERE deadline = CURDATE() + INTERVAL 1 DAY;
+SELECT * FROM tasks WHERE deadline = CURDATE() + INTERVAL 1 DAY;
 
 # Обновить название задачи по её идентификатору
-UPDATE task SET name = 'name_provided' WHERE id = 1;
+UPDATE tasks SET name = 'name_provided' WHERE id = 1;

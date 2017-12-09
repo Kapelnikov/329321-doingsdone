@@ -30,13 +30,13 @@ CREATE TABLE users (
 );
 
 -- Индексы  
-CREATE UNIQUE INDEX users_email ON user (email);
-CREATE INDEX tasks_name ON task (name);
-CREATE INDEX tasks_deadline ON task (deadline);
+CREATE UNIQUE INDEX users_email ON users (email);
+CREATE INDEX tasks_name ON tasks (name);
+CREATE INDEX tasks_deadline ON tasks (deadline);
 
 -- Внешние ключи
-ALTER TABLE project
-	ADD FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE;
-ALTER TABLE task
-	ADD FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
-	ADD FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE;
+ALTER TABLE projects
+	ADD FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE tasks
+	ADD FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+	ADD FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE;
