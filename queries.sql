@@ -18,45 +18,13 @@ VALUES
 
 # Заполнение задач
 INSERT INTO tasks (created_at, completed_at, name, deadline, user_id, project_id)
-SELECT
-    NOW(),
-    t.completed_at,
-    t.name,
-    t.deadline,
-    u.id,
-    t.project_id + (u.id - 1) * 5
-FROM
-    (SELECT
-        NULL AS completed_at,
-        'Собеседование в IT компании' AS name,
-        STR_TO_DATE('01.06.2018', '%d.%m.%Y') AS deadline,
-        3 AS project_id
-    UNION SELECT
-        NULL,
-        'Выполнить тестовое задание',
-        STR_TO_DATE('25.05.2018', '%d.%m.%Y'),
-        3
-    UNION SELECT
-        STR_TO_DATE('2018-04-20 14:20:00', '%Y-%m-%d %H:%i:%s'),
-        'Сделать задание первого раздела',
-        STR_TO_DATE('21.04.2018', '%d.%m.%Y'),
-        2
-    UNION SELECT
-        NULL,
-        'Встреча с другом',
-        STR_TO_DATE('22.04.2018', '%d.%m.%Y'),
-        1
-    UNION SELECT
-        NULL,
-        'Купить корм для кота',
-        NULL,
-        4
-    UNION SELECT
-        NULL,
-        'Заказать пиццу',
-        NULL,
-        4) t
-    LEFT JOIN users u ON TRUE;
+VALUES
+(NOW(), null, 'Собеседование в IT компании', STR_TO_DATE('01.06.2018', '%d.%m.%Y'), 1, 3),
+(NOW(), null, 'Выполнить тестовое задание', STR_TO_DATE('25.05.2018', '%d.%m.%Y'), 2, 3),
+(NOW(), STR_TO_DATE('2018-04-20 14:20:00', '%Y-%m-%d %H:%i:%s'), 'Сделать задание первого раздела', STR_TO_DATE('21.04.2018', '%d.%m.%Y'), 2, 2),
+(NOW(), null, 'Встреча с другом', STR_TO_DATE('22.04.2018', '%d.%m.%Y'), 3, 1),
+(NOW(), null, 'Купить корм для кота', null, 2, 4),
+(NOW(), null, 'Заказать пиццу', null, 1, 4);
     
 # Получить список из всех проектов для одного пользователя
 SELECT * FROM projects
