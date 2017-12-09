@@ -1,7 +1,7 @@
 <?php
-$con = mysqli_connect('doingsdone', 'root', '', 'doingsdone');
+$con = mysqli_connect('localhost', 'root', '', 'doingsdone');
 if (!$con) {
-    print(use_template('templates/error.php', ['error_text' => mysqli_connect_error()]));
+    print(renderTemplate('templates/error.php', ['error_text' => mysqli_connect_error()]));
     exit;
 };
 ?>
