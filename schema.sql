@@ -1,26 +1,26 @@
 CREATE DATABASE doingsdone;
 USE doingsdone;
 
--- Проекты
+-- РџСЂРѕРµРєС‚С‹
 CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name CHAR(32),
-    users_id INT
+    user_id INT
 );
 
--- Задачи
+-- Р—Р°РґР°С‡Рё
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    created DATETIME,
-    completed DATETIME,
+    created_at DATETIME,
+    completed_at DATETIME,
     name CHAR(128),
-    file TEXT,
+    file CHAR(225),
     deadline DATE,
-    users_id INT,
-    projects_id INT
+    user_id INT,
+    project_id INT
 );
 
--- Пользователи
+-- РџРѕР»СЊР·РѕРІР°С‚РµР»Рё
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name CHAR(128),
@@ -29,14 +29,14 @@ CREATE TABLE users (
     contacts TEXT
 );
 
--- Индексы
-CREATE UNIQUE INDEX users_email ON users (email);
-CREATE INDEX tasks_name ON tasks (name);
-CREATE INDEX tasks_deadline ON tasks (deadline);
+-- РРЅРґРµРєСЃС‹  
+CREATE UNIQUE INDEX users_email ON user (email);
+CREATE INDEX tasks_name ON task (name);
+CREATE INDEX tasks_deadline ON task (deadline);
 
--- Внешние ключи
-ALTER TABLE projects
-	ADD FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE;
-ALTER TABLE tasks
-	ADD FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE,
-	ADD FOREIGN KEY (projects_id) REFERENCES projects (id) ON DELETE CASCADE;
+-- Р’РЅРµС€РЅРёРµ РєР»СЋС‡Рё
+ALTER TABLE project
+	ADD FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE;
+ALTER TABLE task
+	ADD FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+	ADD FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE;
