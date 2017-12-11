@@ -1,14 +1,16 @@
 <?php
 
+
+
 // функция подсчета числа задач из массива
-function count_tasks($tasks, $project_name) {
- if ($project_name == 'Все') {
+function count_tasks($tasks, $project_id) {
+ if ($project_id == 0) {
   return count($tasks);
  }
 
  $count = 0;
  foreach ($tasks as $task) {
-  if ($task['Категория'] == $project_name) {
+  if ($task['project_id'] == $project_id) {
    $count++; // Прибавляем 1
   }
  }

@@ -6,7 +6,7 @@ $task_name = $_POST["name"] ?? "";
 $task_date = $_POST["date"] ?? "";
 
 
-
+var_dump($projects);
 
 
 
@@ -43,11 +43,11 @@ $task_date = $_POST["date"] ?? "";
           
           <?php
 
-            array_shift($projects);
+           
             echo '<option value=""> Выберите проект</option>';  
             
             foreach ($projects as $project) {
-              print('<option value="'. $project . '"> '. $project . '</option>'); 
+              print('<option value="'. $project["id"] . '"> '. $project["name"] . '</option>'); 
 
                     }
 
