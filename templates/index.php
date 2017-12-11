@@ -68,14 +68,14 @@ $days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
                     
                     <table class="tasks">
                      <?php foreach ($filtered_tasks as $key => $value): ?> 
-                            <tr class="tasks__item task <?=($value['Выполнен'] == 'Да') ? 'task--completed' : '' ?>">
+                            <tr class="tasks__item task <?=($value['completed_at'] != NULL) ? 'task--completed' : '' ?>">
                             <td class="task__select">
                             <label class="checkbox task__checkbox">
-                            <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                            <span class="checkbox__text"><?=$value['Задача']; ?></span>
+                            <input onclick="return location.href='/?task_completed=true&id=<?php echo $value["id"]?>'" class="checkbox__input visually-hidden" type="checkbox" <?=($value['completed_at'] != NULL) ? 'checked' : '' ?>>
+                            <span class="checkbox__text"><?=$value['name']; ?></span>
                             </label>
                             </td>
-                            <td class="task__date"><?=$value['Дата выполнения']; ?></td>
+                            <td class="task__date"><?=$value['deadline']; ?></td>
                             <td class="task__controls">
                             </td>
                             </tr>

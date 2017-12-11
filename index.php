@@ -9,6 +9,24 @@ require_once(__DIR__.'../init.php');
 require_once(__DIR__.'../data.php');
 require_once(__DIR__.'../userdata.php');
 
+$projects = [];
+$user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : false;
+
+
+if ($user_id and $result = mysqli_query($con, "SELECT * FROM projects WHERE user_id = $user_id")) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $projects [] = $row;
+    }
+}
+
+$tasks = [];
+
+if ($user_id and $result = mysqli_query($con, "SELECT * FROM tasks WHERE user_id = $user_id")) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tasks [] = $row;
+    }
+}
+
 $project_temp = null;
 $filtered_tasks = $tasks;
 $modal = '';
@@ -42,17 +60,19 @@ if (isset($_GET["login"])) {
                     
         if (!empty ($password) and !empty ($email)) {
             $search = null;
-            foreach ($users as $i => $user) {
-               if ($user["email"] == $email) {
-                    if (password_verify ($password, $user["password"])) {
-                        $search = $i;
-                    }
+            
+            $query = "SELECT * FROM users WHERE email = '$email'";
+            if ($result = mysqli_query($con, $query)) {
+                    $row = mysqli_fetch_assoc($result);
+                        if (password_verify($password, $row["password"])) {
+                           $search = $row["id"];    
+                        }
 
-                    else {
-                        $errors["password"] = "Вы ввели неверный пароль";
-                    }
-               }
-           }  
+                        else {
+                            $errors["password"] = "Вы ввели неверный пароль";
+                        }
+                }    
+          
 
            if (is_null($search)) {
 
@@ -76,6 +96,72 @@ echo renderTemplate($config['templates_path'] . 'auth_form.php', ['errors' => $e
 
 }
 
+if (isset($_GET["register"])) {
+    $errors = [];
+    $success = "";
+
+        if (isset($_SESSION["user_id"])) {
+           $errors["auth"] = "Вы уже авторизованы";     
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $data = $_POST;
+         
+            if (isset($_POST["register_submit"])) {
+            $password = $_POST["password"];
+            $email = $_POST["email"];
+            $name = $_POST["name"];
+
+            if (empty($password)) {
+            $errors["password"] = "Введите пароль!";
+
+
+            }
+
+           if (empty($email)) {
+                $errors["email"] = "Введите email!";
+                
+
+           }
+
+           else {
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                   $errors["email"] = "Неправильно набран email!";
+                }
+                $query = "SELECT * FROM users WHERE email = '$email'";
+                    if (empty($errors) and $result = mysqli_query($con, $query)) {
+                        $errors["email"] = "Данный email уже существует!";
+                
+
+                    }
+
+                }
+
+           if (empty($name)) {
+                $errors["name"] = "Введите имя!";
+                
+
+           }
+                    
+        if (empty($errors)) {
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $query = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password_hash')";
+            $insert = mysqli_query($con, $query);
+                if ($insert == TRUE) {
+                    $success = "Вы успешно зарегистрированы!";
+                }
+        }
+   }
+
+
+}    
+
+        $page_content = renderTemplate($config['templates_path'] . 'register.php', ["errors" => $errors, "success" => $success]);
+}
+
+
+
 if (isset($_GET['project_id'])) {
     $project_id = $_GET['project_id'];
 
@@ -84,7 +170,7 @@ if (isset($_GET['project_id'])) {
 
         //послать заголовок 404
         http_response_code(404);
-        print("Сорямба, гайз! Такой страницы нет! Ошибка 404!");  
+        print("Извините! Такой страницы нет! Ошибка 404!");  
         die();
     } 
     else {
@@ -103,9 +189,27 @@ if (isset ($_GET["show_completed"])) {
     header("Location: /"); // относительный путь на главную
 }
 
+if (isset ($_GET["task_completed"])) {
+   $task_id = $_GET["id"];
+   $query = "SELECT * FROM tasks WHERE id = '$task_id'";
+        if ($result = mysqli_query($con, $query)) {
+            $task = mysqli_fetch_assoc($result);
+
+            $completed_at = "NULL";
+            if ($task["completed_at"] == NULL) {
+                $completed_at = "NOW()";
+            }
+
+            $query = "UPDATE tasks SET completed_at = $completed_at WHERE id = '$task_id'";
+            $insert = mysqli_query($con, $query);
+
+            }
+    header("Location: /"); // относительный путь на главную
+}
+
 if (isset ($_COOKIE ["show_completed"]) and $_COOKIE ["show_completed"] == 0)
     foreach ($filtered_tasks as $i => $task) {
-        if ($task['Выполнен'] == 'Да') {
+        if ($task['completed_at'] != NULL) {
             unset($filtered_tasks[$i]);
         }
 
@@ -118,13 +222,12 @@ if (isset($_GET['add'])) {
     $overlay = "overlay";
    
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $new_tasks = [
-            "Задача" => $_POST["name"],
-            "Дата выполнения" => $_POST["date"],
-            "Категория" => $_POST["project"],
-            ];
-    array_unshift($tasks, $new_tasks);
-    array_unshift($filtered_tasks, $new_tasks);
+    $name = $_POST["name"];
+    $deadline = $_POST["date"];
+    $project_id = $_POST["project"];
+    $now = "NOW()";
+    $query = "INSERT INTO tasks (name, deadline, project_id, user_id, created_at) VALUES ('$name', '$deadline', '$project_id', '$user_id', $now)";
+            $insert = mysqli_query($con, $query);
 }
    
 $errors = [];   
@@ -179,15 +282,21 @@ if (isset($_GET['close'])) {
     !$modal;
     }
 
+ $user = FALSE;
+
+    $query = "SELECT * FROM users WHERE id = '$user_id'";
+        if ($result = mysqli_query($con, $query)) {
+            $user = mysqli_fetch_assoc($result);
+            }
 
 
-
-$page_content = renderTemplate($config['templates_path'] . 'index.php', ['projects' => $projects, 'tasks' => $tasks, 'filtered_tasks' => $filtered_tasks]);
+if (!isset($page_content)) 
+    $page_content = renderTemplate($config['templates_path'] . 'index.php', ['projects' => $projects, 'tasks' => $tasks, 'filtered_tasks' => $filtered_tasks]);
 
 if ($config['enable']) {
-    $layout_content = renderTemplate($config['templates_path'] . 'layout.php', ['projects' => $projects, 'tasks' => $tasks, 'content' => $page_content, 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal, 'users' => $users]);
+    $layout_content = renderTemplate($config['templates_path'] . 'layout.php', ['projects' => $projects, 'tasks' => $tasks, 'content' => $page_content, 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal, 'user' => $user]);
 } else {
-    $layout_content = renderTemplate($config['templates_path'] . 'off.php', ['projects' => $projects, 'tasks' => $tasks, 'error_msg' => 'Сорямба гайз, сайт не работает!', 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal]);
+    $layout_content = renderTemplate($config['templates_path'] . 'off.php', ['projects' => $projects, 'tasks' => $tasks, 'error_msg' => 'Извините, сайт не работает!', 'page_title' => 'Дела в порядке', 'filtered_tasks' => $filtered_tasks, 'overlay' => $overlay, 'modal' => $modal]);
 
 
 

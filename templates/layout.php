@@ -24,8 +24,9 @@
                 <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
             </a>
 
-           <?php if (isset($_SESSION["user_id"]) and isset($users[$_SESSION["user_id"]])) {
-                $user = $users[$_SESSION["user_id"]];
+           <?php if ($user) {
+              
+
                 print ('
                     <div class="main-header__side">
                          <a class="main-header__side-item button button--plus" href="#">Добавить задачу</a>
@@ -67,8 +68,9 @@
 
                         $index = 0;
                         $num = count($projects);
-                        while ($index < $num) {
-                        $project = $projects[$index];
+                        foreach ($projects as $index => $project) {
+                            
+                   
 
 
                         if ($index == 0) {
@@ -80,10 +82,10 @@
                            }
 
 
-                        print ('<a class="main-navigation__list-item-link" href="index.php?project_id=' . $index . '">' . $project . '</a>');
-                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project) . '</span>');
+                        print ('<a class="main-navigation__list-item-link" href="index.php?project_id=' . $index . '">' . $project["name"] . '</a>');
+                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project["id"]) . '</span>');
                         print ('</li>');
-                        $index++;
+                        
                         }
                         ?>
 
