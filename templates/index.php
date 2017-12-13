@@ -1,31 +1,5 @@
  
 
-<?php
-
-
-
-
-
-
-
-
-// устанавливаем часовой пояс в Московское время
-date_default_timezone_set('Europe/Moscow');
-
-$days = rand(-3, 3);
-$task_deadline_ts = strtotime("+" . $days . " day midnight"); // метка времени даты выполнения задачи
-$current_ts = strtotime('now midnight'); // текущая метка времени
-
-// запишите сюда дату выполнения задачи в формате дд.мм.гггг
-$date_deadline = date ('d.m.Y',$task_deadline_ts);
-
-// в эту переменную запишите кол-во дней до даты задачи
-$days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
-
-?>
-
-
-
                 <h2 class="content__main-heading">Список задач</h2>
 
                 <form class="search-form" action="index.html" method="post">
@@ -36,10 +10,10 @@ $days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
 
                 <div class="tasks-controls">
                     <nav class="tasks-switch">
-                        <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-                        <a href="/" class="tasks-switch__item">Повестка дня</a>
-                        <a href="/" class="tasks-switch__item">Завтра</a>
-                        <a href="/" class="tasks-switch__item">Просроченные</a>
+                        <a href="/?task_switch=all" class="tasks-switch__item <?php if ($_GET["task_switch"]=='all' || !isset($_GET["task_switch"])):?> tasks-switch__item--active <?php endif; ?>">Все задачи</a>
+                        <a href="/?task_switch=today" class="tasks-switch__item <?php if ($_GET["task_switch"]=='today'):?> tasks-switch__item--active <?php endif; ?>">Повестка дня</a>
+                        <a href="/?task_switch=tomorrow" class="tasks-switch__item <?php if ($_GET["task_switch"]=='tomorrow'):?> tasks-switch__item--active <?php endif; ?>">Завтра</a>
+                        <a href="/?task_switch=overdue" class="tasks-switch__item <?php if ($_GET["task_switch"]=='overdue'):?> tasks-switch__item--active <?php endif; ?>">Просроченные</a>
                     </nav>
 
                     <label class="checkbox">
@@ -72,10 +46,10 @@ $days_until_deadline = ($task_deadline_ts - $current_ts) / 86400;
                             <td class="task__select">
                             <label class="checkbox task__checkbox">
                             <input onclick="return location.href='/?task_completed=true&id=<?php echo $value["id"]?>'" class="checkbox__input visually-hidden" type="checkbox" <?=($value['completed_at'] != NULL) ? 'checked' : '' ?>>
-                            <span class="checkbox__text"><?=$value['name']; ?></span>
+                            <span class="checkbox__text"><?=htmlspecialchars($value['name']); ?></span>
                             </label>
                             </td>
-                            <td class="task__date"><?=$value['deadline']; ?></td>
+                            <td class="task__date"><?=htmlspecialchars($value['deadline']); ?></td>
                             <td class="task__controls">
                             </td>
                             </tr>

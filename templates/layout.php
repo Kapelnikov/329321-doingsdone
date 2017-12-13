@@ -29,7 +29,7 @@
 
                 print ('
                     <div class="main-header__side">
-                         <a class="main-header__side-item button button--plus" href="#">Добавить задачу</a>
+                         <a class="main-header__side-item button button--plus" href="index.php?add">Добавить задачу</a>
 
                             <div class="main-header__side-item user-menu">
                                 <div class="user-menu__image">
@@ -37,7 +37,7 @@
                                 </div>
 
                             <div class="user-menu__data">
-                                <p>' . $user["name"] . '</p>
+                                <p>' . htmlspecialchars($user["name"]) . '</p>
 
                                 <a href="/logout.php">Выйти</a>
                             </div>
@@ -51,7 +51,11 @@
             else print (' 
                             <div class="main-header__side">
                                 <a class="main-header__side-item button button--transparent" href="/index.php?login">Войти</a>
-                            </div>');
+                            </div>
+                            
+                             
+
+                            ');
 
                             ?>
 
@@ -82,8 +86,8 @@
                            }
 
 
-                        print ('<a class="main-navigation__list-item-link" href="index.php?project_id=' . $index . '">' . $project["name"] . '</a>');
-                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, $project["id"]) . '</span>');
+                        print ('<a class="main-navigation__list-item-link" href="index.php?project_id=' . (int)$project['id'] . '">' . htmlspecialchars($project["name"]) . '</a>');
+                        print ('<span class="main-navigation__list-item-count">' . count_tasks($tasks, (int)$project["id"]) . '</span>');
                         print ('</li>');
                         
                         }
@@ -93,7 +97,7 @@
                 </nav>
 
 
-                <a class="button button--transparent button--plus content__side-button" href="#">Добавить проект</a>
+                <a class="button button--transparent button--plus content__side-button" href="/index.php?add=project">Добавить проект</a>
             </section>
 
             <main class="content__main">
@@ -191,68 +195,8 @@ cy="13.5" r="12.666"/><path fill="#879296" d="M13.92 18.07c.142-.016.278-.074.39
     </div>
 </footer>
 
-<div class="modal" hidden>
-    <button class="modal__close" type="button" name="button">Закрыть</button>
 
-    <h2 class="modal__heading">Добавление задачи</h2>
 
-    <form class="form"  action="index.html" method="post">
-        <div class="form__row">
-            <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input" type="text" name="name" id="name" value="" placeholder="Введите название">
-        </div>
-
-        <div class="form__row">
-            <label class="form__label" for="project">Проект <sup>*</sup></label>
-
-            <select class="form__input form__input--select" name="project" id="project">
-                <option value="">Входящие</option>
-            </select>
-        </div>
-
-        <div class="form__row">
-            <label class="form__label" for="date">Дата выполнения</label>
-
-            <input class="form__input form__input--date" type="date" name="date" id="date" value="" placeholder="Введите дату в формате 
-
-ДД.ММ.ГГГГ">
-        </div>
-
-        <div class="form__row">
-            <label class="form__label" for="preview">Файл</label>
-
-            <div class="form__input-file">
-                <input class="visually-hidden" type="file" name="preview" id="preview" value="">
-
-                <label class="button button--transparent" for="preview">
-                    <span>Выберите файл</span>
-                </label>
-            </div>
-        </div>
-
-        <div class="form__row form__row--controls">
-            <input class="button" type="submit" name="" value="Добавить">
-        </div>
-    </form>
-</div>
-
-<div class="modal" hidden>
-    <button class="modal__close" type="button" name="button">Закрыть</button>
-
-    <h2 class="modal__heading">Добавление проекта</h2>
-
-    <form class="form"  action="index.html" method="post">
-        <div class="form__row">
-            <label class="form__label" for="project_name">Название <sup>*</sup></label>
-
-            <input class="form__input" type="text" name="name" id="project_name" value="" placeholder="Введите название проекта">
-        </div>
-
-        <div class="form__row form__row--controls">
-            <input class="button" type="submit" name="" value="Добавить">
-        </div>
-    </form>
-</div>
 </body>
 </html>
