@@ -22,7 +22,7 @@ $password = $data["email"] ?? "";
       <div class="form__row">
         <label class="form__label" for="email">E-mail <sup>*</sup></label>
 
-        <input class="form__input <?php if (isset($errors['email'])) echo 'form__input--error';?>" type="text" name="email" id="email" value="<?php echo $email ?>" placeholder="Введите e-mail">
+        <input class="form__input <?php if (isset($errors['email'])) echo 'form__input--error';?>" type="email" name="email" id="email" value="<?php echo $email ?>" placeholder="Введите e-mail">
 
         <?php if (isset($errors['email'])): ?> 
             <p class="form__message"><?php echo $errors["email"]?></p>
