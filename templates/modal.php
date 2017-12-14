@@ -19,7 +19,7 @@ $task_date = $_POST["date"] ?? "";
       <div class="form__row">
         <label class="form__label" for="name">Название <sup>*</sup></label>
 
-        <input class="form__input <?php if (isset($errors['name'])) echo 'form__input--error';?>" type="text" name="name" id="name" value="<?=$task_name;?>" placeholder="Введите название">
+        <input class="form__input <?php if (isset($errors['name'])) echo 'form__input--error';?>" type="text" name="name" id="name" value="<?=htmlspecialchars($task_name);?>" placeholder="Введите название">
 
         <?php if (isset($errors['name'])): ?> 
             <p class="form__message"><?php echo $errors["name"]?></p>
@@ -42,7 +42,7 @@ $task_date = $_POST["date"] ?? "";
             echo '<option value=""> Выберите проект</option>';  
             
             foreach ($projects as $project) {
-              print('<option value="'. $project["id"] . '"> '. $project["name"] . '</option>'); 
+              print('<option value="'. $project["id"] . '"> '. htmlspecialchars($project["name"]) . '</option>'); 
 
                     }
 
@@ -60,7 +60,7 @@ $task_date = $_POST["date"] ?? "";
       <div class="form__row">
         <label class="form__label" for="date">Дата выполнения</label>
 
-        <input class="form__input form__input--date" type="date" name="date" id="date" value="<?=$task_date;?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+        <input class="form__input form__input--date" type="date" name="date" id="date" value="<?=htmlspecialchars($task_date);?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
       </div>
 
       <div class="form__row">

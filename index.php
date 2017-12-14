@@ -2,10 +2,10 @@
 
 session_start();
 
-require_once(__DIR__.'/config.php');
-require_once(__DIR__.'/functions.php');
-require_once(__DIR__.'/mysql_helper.php');
-require_once(__DIR__.'/init.php');
+require_once('config.php');
+require_once('functions.php');
+require_once('mysql_helper.php');
+require_once('init.php');
 
 
 $projects = [];
@@ -146,11 +146,12 @@ if (isset($_GET['add'])) {
     if ($_GET["add"] == "project") {
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $name = mysqli_real_escape_string($_POST["name"]);
+            $name = mysqli_real_escape_string($con, $_POST["name"]);
             
             if (empty($name)) {
                 $errors["name"] = "Это поле нужно заполнить";
             }
+
         
             if (!empty($errors)) {
                 $page_content = renderTemplate($config['templates_path'] . 'modal.php', ['projects' => $projects, 'errors' => $errors, 'data' => $data]);
@@ -161,6 +162,10 @@ if (isset($_GET['add'])) {
 
             $query = "INSERT INTO projects (name, user_id) VALUES ('$name', '$user_id')";
             $insert = mysqli_query($con, $query);
+
+            if ($insert) {
+                header('Location: /');
+            }
 
             if (!empty($errors)) {
                 $page_content = renderTemplate($config['templates_path'] . 'project_add.php', ['errors' => $errors]);
@@ -176,9 +181,9 @@ if (isset($_GET['add'])) {
     } else {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $name = mysqli_real_escape_string($_POST["name"]);
-            $deadline = mysqli_real_escape_string($_POST["date"]);
-            $project_id = mysqli_real_escape_string($_POST["project"]);
+            $name = mysqli_real_escape_string($con, $_POST["name"]);
+            $deadline = mysqli_real_escape_string($con, $_POST["date"]);
+            $project_id = mysqli_real_escape_string($con, $_POST["project"]);
             $now = "NOW()";
 
             $required = ['name', 'date', 'project'];
@@ -199,7 +204,7 @@ if (isset($_GET['add'])) {
                 move_uploaded_file($tmp_name, './uploads/' . $path);
             }
 
-            $query = "INSERT INTO tasks (name, deadline, project_id, user_id, created_at) VALUES ('$name', '$deadline', '$project_id', '$user_id', $now)";
+            $query = "INSERT INTO tasks (name, deadline, project_id, user_id, created_at, file) VALUES ('$name', '$deadline', '$project_id', '$user_id', $now, '$path')";
             $insert = mysqli_query($con, $query);
             if ($insert) {
                 header('Location: /');
