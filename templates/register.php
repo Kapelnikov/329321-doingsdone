@@ -37,7 +37,7 @@ else {
 
               	<?php if (isset($errors['password'])): ?> 
             		<p class="form__message"><?php echo $errors["password"]?></p>
-        		<?php endif; ?> 
+        		    <?php endif; ?> 
 
             </div>
 
@@ -48,7 +48,7 @@ else {
 
               	<?php if (isset($errors['name'])): ?> 
            			<p class="form__message"><?php echo $errors["name"]?></p>
-        		<?php endif; ?> 
+        		    <?php endif; ?> 
             </div>
 
             <div class="form__row form__row--controls">

@@ -49,6 +49,11 @@
                             <span class="checkbox__text"><?=htmlspecialchars($value['name']); ?></span>
                             </label>
                             </td>
+                            <?php if (!empty($value["file"])) :?>
+                            <td class="task__file">
+                                <a class="download-link" href="/uploads/<?php echo $value["file"]?>"><?php echo $value["file"]?></a>
+                            </td>
+                            <?php endif; ?>  
                             <td class="task__date"><?=htmlspecialchars($value['deadline']); ?></td>
                             <td class="task__controls">
                             </td>

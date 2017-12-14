@@ -1,9 +1,19 @@
 <?php
 
-require_once(__DIR__.'/mysql_helper.php');
-require_once(__DIR__.'/init.php');
+require_once('mysql_helper.php');
+require_once('init.php');
 
-// функция подсчета числа задач из массива
+
+
+/**
+ * функция подсчета числа задач из массива
+ *
+ * @param $tasks array массив задач
+ * @param $project_id int айди проекта
+ *
+ * @return $count int число задач в проекте
+ */
+
 function count_tasks($tasks, $project_id) {
     if ($project_id == 0) {
         return count($tasks);
@@ -19,7 +29,18 @@ function count_tasks($tasks, $project_id) {
     return $count;
 }
 
-// функция шаблонизации
+
+
+
+/**
+ * функция шаблонизации
+ *
+ * @param $path string путь до шаблона
+ * @param $page_name string имя страницы
+ *
+ * @return $html string результат обработки шаблона
+ */
+
 function renderTemplate($path, $page_name) {
     if (!file_exists($path and $page_name)) {
         ob_start();
@@ -30,6 +51,14 @@ function renderTemplate($path, $page_name) {
         return $html = "";
     }
 }
+
+/**
+ * функция авторизации
+ *
+ * @param $con mysqli ресурс соединения
+ *
+ * @return mixed
+ */
 
 function auth($con) {
     $password = mysqli_real_escape_string($con, $_POST["password"]);
@@ -71,6 +100,14 @@ function auth($con) {
     }
 }
 
+/**
+ * функция регистрации
+ *
+ * @param $con mysqli ресурс соединения
+ *
+ * @return mixed
+ */
+
 function register($con) {
     $password = mysqli_real_escape_string($con, $_POST["password"]);
     $email = mysqli_real_escape_string($con, $_POST["email"]);
@@ -107,6 +144,15 @@ function register($con) {
         }
     }
 }
+
+/**
+ * функция сортировки задач по датам
+ *
+ * @param $con mysqli ресурс соединения
+ * @param $filtered_tasks array отфильтрованные задачи
+ *
+ * @return filtered_tasks array отсортированный массив задач по определенной дате
+ */
 
 function taskSwitcher($con, $filtered_tasks) {
     if ($_GET['task_switch'] == 'today') {

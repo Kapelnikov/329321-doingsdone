@@ -22,7 +22,7 @@ $password = $data["email"] ?? "";
       <div class="form__row">
         <label class="form__label" for="email">E-mail <sup>*</sup></label>
 
-        <input class="form__input <?php if (isset($errors['email'])) echo 'form__input--error';?>" type="email" name="email" id="email" value="<?php echo $email ?>" placeholder="Введите e-mail">
+        <input class="form__input <?php if (isset($errors['email'])) echo 'form__input--error';?>" type="email" name="email" id="email" value="<?php echo htmlspecialchars($email) ?>" placeholder="Введите e-mail">
 
         <?php if (isset($errors['email'])): ?> 
             <p class="form__message"><?php echo $errors["email"]?></p>
@@ -32,7 +32,7 @@ $password = $data["email"] ?? "";
       <div class="form__row">
         <label class="form__label" for="password">Пароль<sup>*</sup></label>
 
-        <input class="form__input <?php if (isset($errors['password'])) echo 'form__input--error';?>" type="password" name="password" id="password" value="<?php echo $password ?>" placeholder="Введите пароль">
+        <input class="form__input <?php if (isset($errors['password'])) echo 'form__input--error';?>" type="password" name="password" id="password" value="<?php echo htmlspecialchars($password) ?>" placeholder="Введите пароль">
       
         <?php if (isset($errors['password'])): ?> 
             <p class="form__message"><?php echo $errors["password"]?></p>
